@@ -17,8 +17,8 @@ class CONFIG:
     NOISE_RATIO = 0.6
     MEANS = np.array([123.68, 116.779, 103.939]).reshape((1,1,1,3)) 
     VGG_MODEL = 'pretrained-model/imagenet-vgg-verydeep-19.mat'
-    STYLE_IMAGE = 'images/stone_style.jpg'
-    CONTENT_IMAGE = 'images/content300.jpg'
+    STYLE_IMAGE = 'images/design_0.jpg'
+    CONTENT_IMAGE = 'images/shirt_1.jpg'
     OUTPUT_DIR = 'output/'
     
 def load_vgg_model(path):
