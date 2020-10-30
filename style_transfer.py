@@ -80,7 +80,6 @@ def main():
     content_image = reshape_and_normalize_image(content_image)
     style_image = scipy.misc.imread("images/design_0.jpg")
     style_image = reshape_and_normalize_image(style_image)
-    generated_image = generate_noise_image(content_image)
     model = load_vgg_model("pretrained-model/imagenet-vgg-verydeep-19.mat")
     sess.run(model['input'].assign(content_image))
     out = model['conv4_2']
