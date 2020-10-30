@@ -73,11 +73,6 @@ def load_vgg_model(path):
     graph['avgpool5'] = _avgpool(graph['conv5_4'])
     return graph
 
-def generate_noise_image(content_image, noise_ratio = CONFIG.NOISE_RATIO):
-    noise_image = np.random.uniform(-20, 20, (1, CONFIG.IMAGE_HEIGHT, CONFIG.IMAGE_WIDTH, CONFIG.COLOR_CHANNELS)).astype('float32')
-    input_image = noise_image * noise_ratio + content_image * (1 - noise_ratio)
-    return input_image
-
 def reshape_and_normalize_image(image):
     image = np.reshape(image, ((1,) + image.shape))
     image = image - CONFIG.MEANS
