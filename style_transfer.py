@@ -1,5 +1,6 @@
 import os
 import sys
+import cv2
 import scipy.io
 import scipy.misc
 import numpy as np
@@ -87,6 +88,39 @@ def main():
     optimizer = tf.train.AdamOptimizer(2.0)
     train_step = optimizer.minimize(J)
     model_nn(sess, generated_image)
+    
+    img = cv2.imread(content_image)[:,:,::-1]
+    edges = cv2.Canny(img, 20, 160)
 
+    for i in range(edges.shape[0]):
+        restart = False
+        last_pixel = -1
+        for j in range(edges.shape[1]):
+            value = edges[i,j]
+            if value == 255:
+                restart = True
+                last_pixel = j
+            if restart:
+                edges[i,j] = 255
+        for k in range(last_pixel, edges.shape[1]):
+            edges[i,k] = 0
+
+    mask = np.array(edges) / 255
+    list_masks = [-mask, -mask, -mask]
+    new_mask = np.stack(list_masks, axis = 2)
+    
+    newimg = np.multiply(output, new_mask)
+    for i in range(newimg.shape[0]):
+        for j in range(newimg.shape[1]):
+            if newimg[i, j, 0] == -0 and newimg[i, j, 1] == -0 and newimg[i, j, 2] == -0:
+                newimg[i, j, 0] = -255
+                newimg[i, j, 1] = -255
+                newimg[i, j, 2] = -255 
+    plt.subplot(121),plt.imshow(img)
+    plt.title('Original Image'), plt.xticks([]), plt.yticks([])
+    plt.subplot(122),plt.imshow(newimg)
+    plt.title('New Fashion'), plt.xticks([]), plt.yticks([])
+    plt.show()
+    
 if __name__ == "__main__":
     main()
